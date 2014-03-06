@@ -620,11 +620,42 @@ public class User extends Thing {
 		}
 		return subscibed;
 	}
+	
+	/**
+	 * private function used to get submissions on Reddit
+	 * @author Trent Rand
+	 * @param where place of Submission - ex. "/r/funny/"
+	 * @return Submissions from the specified location, null if the location is invalid
+	 */
+	
+	public List<Submission> getSubmissions(String where){		
+		
+		//if we got this far, the location is valid
+				List<Submission> submissions = new ArrayList<Submission>(25);
+				try{
+					JSONObject object = (JSONObject) Utils.get(new URL(redditAddress()
+											+ where + ".json?"), cookie);
+					JSONObject data = (JSONObject) object.get("data");
+					JSONArray children = (JSONArray) data.get("children");
+					
+					JSONObject obj;
+					for(int i = 0; i < children.size(); i++){
+						obj = (JSONObject) children.get(i);
+						obj = (JSONObject) obj.get("data");
+						submissions.add(new Submission(obj));
+					}
+				}
+				catch (Exception e) {e.printStackTrace();}
+				return submissions;
+	}
+	
+	
 	/**
 	 * @author Evin Ugur
 	 * @return the user's user page without a trailing slash
 	 */
 	public String userAddress(){return "http://reddit.com/user/" + username;}
+	public String redditAddress(){return "http://reddit.com"; }
 	public URL userAddressURL() throws MalformedURLException {return new URL(userAddress());}
 	
 }

@@ -174,10 +174,9 @@ public class Submission extends Thing {
 		return info(url).get("author").toString();
 	}
 
-	
 	/**
-	 * This function returns a LinkedList of Submission elements. 
-	 * Displays first page.
+	 * This function returns a LinkedList of Submission elements. Displays first
+	 * page.
 	 * 
 	 * @return Submission from a specific Subreddit (index-based)
 	 * 
@@ -186,9 +185,9 @@ public class Submission extends Thing {
 	 * @throws ParseException
 	 *             If JSON parsing fails
 	 */
-	public static LinkedList<Submission> getSubmissionsFromSubreddit(String redditName,
-			Popularity type, Page frontpage, User user, int index)
-			throws IOException, ParseException {
+	public static LinkedList<Submission> getSubmissionsFromSubreddit(
+			String redditName, Popularity type, Page frontpage, User user,
+			int index) throws IOException, ParseException {
 		LinkedList<Submission> submissions = new LinkedList<Submission>();
 		URL url;
 		String urlString = "http://www.reddit.com/r/" + redditName;
@@ -214,17 +213,17 @@ public class Submission extends Thing {
 				.get("children");
 		JSONObject data;
 		data = (JSONObject) array.get(index);
-		data = ((JSONObject) ((JSONObject) data).get("data"));
+		data = ((JSONObject) data.get("data"));
 		submissions.add(new Submission(user, data.get("id").toString(),
 				new URL("http://www.reddit.com"
 						+ (data.get("permalink").toString()))));
 
 		return submissions;
 	}
-	
+
 	/**
-	 * This function returns a Submission. 
-	 * Pair it with getSubmissionsFromSubreddit() to match Index.
+	 * This function returns a Submission. Pair it with
+	 * getSubmissionsFromSubreddit() to match Index.
 	 * 
 	 * @return Submission from a specific Subreddit (index-based)
 	 * 
@@ -261,17 +260,16 @@ public class Submission extends Thing {
 				.get("children");
 		JSONObject data;
 		data = (JSONObject) array.get(index);
-		data = ((JSONObject) ((JSONObject) data).get("data"));
-		submission = new Submission(user, data.get("id").toString(),
-				new URL("http://www.reddit.com"
-						+ (data.get("permalink").toString())));
+		data = ((JSONObject) data.get("data"));
+		submission = new Submission(user, data.get("id").toString(), new URL(
+				"http://www.reddit.com" + (data.get("permalink").toString())));
 
 		return submission;
 	}
 
 	/**
-	 * This function returns a Submission. 
-	 * Pair it with getSubmissionsFromUsers() to match Index.
+	 * This function returns a Submission. Pair it with
+	 * getSubmissionsFromUsers() to match Index.
 	 * 
 	 * @return Submission from a specific User (index-based)
 	 * 
@@ -287,7 +285,6 @@ public class Submission extends Thing {
 		URL url;
 		String urlString = "http://www.reddit.com/u/" + username;
 
-		
 		/**
 		 * TODO Implement Pages
 		 */
@@ -301,17 +298,16 @@ public class Submission extends Thing {
 				.get("children");
 		JSONObject data;
 		data = (JSONObject) array.get(index);
-		data = ((JSONObject) ((JSONObject) data).get("data"));
-		submission = new Submission(user, data.get("id").toString(),
-				new URL("http://www.reddit.com"
-						+ (data.get("permalink").toString())));
+		data = ((JSONObject) data.get("data"));
+		submission = new Submission(user, data.get("id").toString(), new URL(
+				"http://www.reddit.com" + (data.get("permalink").toString())));
 
 		return submission;
 	}
-	
+
 	/**
-	 * This function returns a LinkedList of Submission elements. 
-	 * Displays first page.
+	 * This function returns a LinkedList of Submission elements. Displays first
+	 * page.
 	 * 
 	 * @return List<Submission> from a specific User (index-based)
 	 * 
@@ -320,9 +316,9 @@ public class Submission extends Thing {
 	 * @throws ParseException
 	 *             If JSON parsing fails
 	 */
-	public static LinkedList<Submission> getSubmissionsFromUser(String username,
-			Popularity type, Page frontpage, User user, int index)
-			throws IOException, ParseException {
+	public static LinkedList<Submission> getSubmissionsFromUser(
+			String username, Popularity type, Page frontpage, User user,
+			int index) throws IOException, ParseException {
 		LinkedList<Submission> submissions = new LinkedList<Submission>();
 		URL url;
 		String urlString = "http://www.reddit.com/u/" + username;
@@ -340,17 +336,17 @@ public class Submission extends Thing {
 				.get("children");
 		JSONObject data;
 		data = (JSONObject) array.get(index);
-		data = ((JSONObject) ((JSONObject) data).get("data"));
+		data = ((JSONObject) data.get("data"));
 		submissions.add(new Submission(user, data.get("id").toString(),
 				new URL("http://www.reddit.com"
 						+ (data.get("permalink").toString()))));
 
 		return submissions;
 	}
-	
+
 	/**
-	 * This function returns a Submission ambiguously. 
-	 * No option for sorting. TODO
+	 * This function returns a Submission ambiguously. No option for sorting.
+	 * TODO
 	 * 
 	 * @return Submission (index-based)
 	 * 
@@ -358,31 +354,30 @@ public class Submission extends Thing {
 	 *             If connection fails
 	 * @throws ParseException
 	 *             If JSON parsing fails
-	 *
-	 * @param subredditName ex. funny, java
-	 * @param slashType ex. /r/ or /u/
-	 * @param page the page number of the post (entering 2 would get the 50th post [page*25])
-	 * @param user pass in your current signed-in User object
-	 * @param index index of the element on that page (0-25)
-	 * @return 
-	 * @throws IOException
-	 * @throws ParseException
+	 * 
+	 * @param endOfUrl
+	 *            ex. "/r/funny" or "/u/username"
+	 * @param user
+	 *            pass in your current signed-in User object
+	 * @param index
+	 *            index of the element on that page (0-25)
 	 */
-	public static Submission getSubmission(String slashType, String subredditName, int page,
-			int index, User user)
+	public static Submission getSubmission(String endOfUrl, int index, User user)
 			throws IOException, ParseException {
-		//http://www.reddit.com/r/java.json?count=75
+		// http://www.reddit.com/r/java.json?count=75
 		Submission submission = new Submission();
 		URL url;
-		
+
 		String urlString = "http://www.reddit.com";
-		urlString +=  slashType; //append /r/ or /u/
-		urlString += subredditName; //append the name of the subreddit
-		urlString += ".json"; //appends .json to the subredditName
-		urlString += "?count="; //appends formatting for page number (starting index)
-		urlString += page * 25; //appends page number (*25 because there is 25 posts per page)
-		
-		url = new URL(urlString); //create a new URL from <urlString>
+		urlString += endOfUrl;
+		urlString += ".json"; // appends .json to the subredditName
+		urlString += "?count="; // appends formatting for page number (starting
+								// index)
+		urlString += index / 25; // appends page number (*25 because there is 25
+									// posts per page)
+		System.out.println(index / 25);
+		System.out.println("The Url is : " + urlString);
+		url = new URL(urlString); // create a new URL from <urlString>
 
 		Object obj = Utils.get("", url, user.getCookie());
 		JSONObject object = (JSONObject) obj;
@@ -390,14 +385,13 @@ public class Submission extends Thing {
 				.get("children");
 		JSONObject data;
 		data = (JSONObject) array.get(index);
-		data = ((JSONObject) ((JSONObject) data).get("data"));
-		submission = new Submission(user, data.get("id").toString(),
-				new URL("http://www.reddit.com"
-						+ (data.get("permalink").toString())));
+		data = ((JSONObject) data.get("data"));
+		submission = new Submission(user, data.get("id").toString(), new URL(
+				"http://www.reddit.com" + (data.get("permalink").toString())));
 
 		return submission;
 	}
-	
+
 	/**
 	 * This function returns the title of this submission.
 	 * 
@@ -640,7 +634,7 @@ public class Submission extends Thing {
 		array = (JSONArray) obj.get("children");
 		obj = (JSONObject) array.get(0);
 		obj = (JSONObject) obj.get("data");
-		return (JSONObject) obj;
+		return obj;
 	}
 
 	public String getName() {

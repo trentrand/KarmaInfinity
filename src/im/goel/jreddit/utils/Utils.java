@@ -25,7 +25,7 @@ import org.json.simple.parser.ParseException;
 public class Utils {
     // Edit this!
 
-    private static String userAgent = "Omer's Reddit API Java Wrapper";
+    private static String userAgent = "Java In-Class Assignment - Reddit Browser";
 
     /**
      * This function is here because I do this same request a hundred times
