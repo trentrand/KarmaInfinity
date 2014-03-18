@@ -24,8 +24,9 @@ import org.json.simple.parser.ParseException;
  */
 public class Utils {
     // Edit this!
-
-    private static String userAgent = "Java In-Class Assignment - Reddit Browser";
+    private static String userAgent = "";
+    private static String proxyHost = "";
+    private static String proxyPort = "";
 
     /**
      * This function is here because I do this same request a hundred times
@@ -39,6 +40,12 @@ public class Utils {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setUseCaches(false);
+        //TODO Setup proxy support
+        System.setProperty("http.proxyHost", getProxyHost());
+        System.setProperty("http.proxyPort", getProxyPort());
+        System.setProperty("https.proxyHost", getProxyHost());
+        System.setProperty("https.proxyPort", getProxyPort());
+        //--- Proxy Support ends ---
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type",
                 "application/x-www-form-urlencoded; charset=UTF-8");
@@ -59,7 +66,40 @@ public class Utils {
         return jsonObject;
     }
 
-    /**
+
+	/**
+	 * @return the proxyHost
+	 */
+	public static String getProxyHost() {
+		return proxyHost;
+	}
+
+
+	/**
+	 * @return the proxyPort
+	 */
+	public static String getProxyPort() {
+		return proxyPort;
+	}
+
+
+	/**
+	 * @param proxyHost the proxyHost to set
+	 */
+	public static void setProxyHost(String proxyHost) {
+		Utils.proxyHost = proxyHost;
+	}
+
+
+	/**
+	 * @param proxyPort the proxyPort to set
+	 */
+	public static void setProxyPort(String proxyPort) {
+		Utils.proxyPort = proxyPort;
+	}
+
+
+	/**
      * This function submits a GET request and returns a JSON object that
      * corresponds to it.
      * @param url URL
@@ -157,7 +197,7 @@ public class Utils {
 	 * @return A String representation of the Sort enum
 	 */
 	public static String sortToString(Sort sort){
-		String s = "hot";
+		String s = "hot"; //defaults to reddits default, "hot"
 		switch(sort){
 			case t_confidence: s = "confidence"; break;
 			case t_hot: s = "hot"; break;
@@ -166,7 +206,7 @@ public class Utils {
 			case t_old: s = "old"; break;
 			case t_random: s = "random"; break;
 			case t_top: s = "top"; break;
-			default: s = "hot"; break;
+			default: s = "hot"; break; //defaults to reddits default, "hot"
 		}
 		return s;
 	}
@@ -176,7 +216,7 @@ public class Utils {
 	 * @return A String representation of the CommentSort enum
 	 */
 	public static String commentSortToString(CommentSort commentSort){
-		String s = "new";
+		String s = "new"; 
 		switch(commentSort){
 		case t_hot: s = "hot"; break;
 		case t_new: s = "new"; break;
