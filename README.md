@@ -1,24 +1,26 @@
-# jReddit
+# KarmaInfinity
 
-### What is jReddit?
-jReddit is a wrapper for the Reddit API written in Java. Project started by Omer Elnour.
+### What is KarmaInfinity?
+KarmaInfinity is reddit upvote bot. It uses a single proxy per account to mimic reality for each user.
 
 ### What can it do?
-jReddit can login with a user, retrieve user information, submit new links, and vote/comment on submissions, send and receive messages and notifications among other things.
+KarmaInfinity can login with a user, retrieve submissions of /u/ and /r/ pages, vote on submissions, and even cycle through a list of proxied accounts doing each of these actions.
 
-### What's next for jReddit?
-The plan is to implement every feature documented [here](http://www.reddit.com/dev/api). To see which methods have been implemented, and which have not, see [this file](https://github.com/thekarangoel/jReddit/blob/karan/implemented_methods.md).
+### What's next?
+Current I would like to focus attention on creating a stable bot with single user upvoting, multiple user upvoting, and automatic account creation. All of these features will need to be implemented with realistic interaction as well as randomizing so that the accounts remain unbanned. 
 
-### How to contribute?
-Personally, I would suggest reading through the source code to understand the general structure and standards used. Then check the [implemented_methods.md](https://github.com/thekarangoel/jReddit/blob/karan/implemented_methods.md) file to see which methods have not yet been implemented. Choose the ones you'd like to contribute to. After you write the method (and maybe commit it?), write a test to see if it works fine and as expected. Then make sure other tests are working too and your code does not break anty other method.
+## How to contribute?
+To contribute please fork the repo and make all alterations on that fork. After your feature is ready to be merged into the main code, send a pull request! I will check over it and accept it if it works as wanted.
+Be sure to make the bot realistic and randomized!
 
-Send in a pull request with the test and I'll be happy to merge! :-)
+Send in a pull request and I'll be happy to merge!
 
 ### Dependencies
+[jReddit](https://github.com/karan/jReddit)
 [JSON-simple](http://code.google.com/p/json-simple/)
 
-### Examples
-
+### Examples of using the API [More examples](https://github.com/karan/jReddit/blob/master/implemented_methods.md)
+I have implemented some of my own methods which can be found in Submission.java and Submissions.java
 Upvote every submission on the frontpage of a subreddit
 
     import im.goel.jreddit.submissions.Submission;
