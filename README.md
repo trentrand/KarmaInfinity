@@ -13,13 +13,14 @@ Current I would like to focus attention on creating a stable bot with single use
 To contribute please fork the repo and make all alterations on that fork. After your feature is ready to be merged into the main code, send a pull request! I will check over it and accept it if it works as wanted.
 Be sure to make the bot realistic and randomized!
 
-Send in a pull request and I'll be happy to merge!
+_Send in a pull request and I'll be happy to merge!_
 
 ### Dependencies
 [jReddit](https://github.com/karan/jReddit)
+
 [JSON-simple](http://code.google.com/p/json-simple/)
 
-### Examples of using the API [More examples](https://github.com/karan/jReddit/blob/master/implemented_methods.md)
+### Examples of using the API - [More examples](https://github.com/karan/jReddit/blob/master/implemented_methods.md)
 I have implemented some of my own methods which can be found in Submission.java and Submissions.java
 Upvote every submission on the frontpage of a subreddit
 
