@@ -61,7 +61,8 @@ public class Screen {
 	private DefaultListModel<String> submissionList;
 	private List<Submission> submissionsFetched;
 	private JPanel multiPanel;
-	private String[] subreddits = { "pics", "funny", "gaming", "AskReddit",
+	/* 103 Random subreddits */
+	private String[] subredditList = { "pics", "funny", "gaming", "AskReddit",
 			"worldnews", "news", "videos", "iama", "todayilearned", "aww",
 			"technology", "adviceanimals", "science", "music", "movies",
 			"bestof", "books", "earthporn", "explainlikeimfive", "gifs",
@@ -69,7 +70,21 @@ public class Screen {
 			"lifeprotips", "woahdude", "unexpected", "reactiongifs",
 			"showerthoughts", "food", "jokes", "photoshopbattles",
 			"firstworldanarchists", "foodporn", "historyporn", "wtf",
-			"leagueoflegends", "cringepics", "trees", "" };
+			"leagueoflegends", "cringepics", "twitchplayspokemon", "trees",
+			"4chan", "MakeupAddiction", "pokemon", "politics", "pcmasterrace",
+			"soccer", "DotA2", "gentlemanboners", "Minecraft", "circlejerk",
+			"trollxchromosomes", "atheism", "starcraft", "nfl", "games", "nba",
+			"globaloffensive", "dogecoin", "fffffffuuuuuuuuuuuu", "hockey",
+			"cats", "bitcoin", "hiphopheads", "formula1", "teenagers",
+			"conspiracy", "mylittlepony", "celebs", "skyrim", "polandball",
+			"tumblrinaction", "tumblr", "titanfall", "anime", "squaredcircle",
+			"facepalm", "battlefield_4", "tattoos", "android", "gameofthrones",
+			"redditlaqueristas", "ladyboners", "talesfromtechsupport",
+			"hearthstone", "grandtheftautov", "mildlyinfuriating", "awwnime",
+			"darksouls2", "australia", "comics", "talesfromretail",
+			"doctorwho", "collegebasketball", "thathappened", "gamegrumps",
+			"standupshots", "cringe", "carporn", "murica", "guns", "wow",
+			"mma", "starwars" };
 
 	/**
 	 * Launch the application.
