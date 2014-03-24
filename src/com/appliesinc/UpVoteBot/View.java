@@ -145,10 +145,8 @@ public class View {
 		frameApplication = new JFrame();
 		frameApplication.setTitle("Karma \u221E by applies inc.\n");
 		frameApplication.setFont(new Font("Courier New", Font.PLAIN, 12));
-		frameApplication.setBounds(100, 100, 450, 604);
+		frameApplication.setBounds(100, 100, 451, 604);
 		frameApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Add Buttons to JFrame <frameApplcation>
 		frameApplication.getContentPane().setLayout(null);
 
 		// Initialize and setup separator JSeperator
@@ -158,53 +156,53 @@ public class View {
 
 		// Initialize and setup Post-Address JLabel
 		JLabel lblPageName = new JLabel("Page Name:");
-		lblPageName.setFont(new Font("Courier New", Font.PLAIN, 16));
 		lblPageName.setBounds(77, 551, 109, 16);
+		lblPageName.setFont(new Font("Courier New", Font.PLAIN, 16));
 		frameApplication.getContentPane().add(lblPageName);
 
 		// Initialize and setup Get-Karma JButton
 		btnGetKarma = new JButton("Get Karma");
-		btnGetKarma.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGetKarma.setBounds(327, 547, 117, 29);
+		btnGetKarma.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGetKarma.setEnabled(false);
 		frameApplication.getContentPane().add(btnGetKarma);
 
 		txtSubReddit = new JTextField();
-		txtSubReddit.setFont(new Font("Courier New", Font.PLAIN, 13));
 		txtSubReddit.setBounds(183, 545, 143, 28);
+		txtSubReddit.setFont(new Font("Courier New", Font.PLAIN, 13));
 		frameApplication.getContentPane().add(txtSubReddit);
 		txtSubReddit.setColumns(10);
 
 		submissionList = new DefaultListModel<String>();
 
 		btnPagePrevious = new JButton("Previous");
+		btnPagePrevious.setBounds(38, 182, 105, 29);
 		btnPagePrevious.setEnabled(false);
 		btnPagePrevious.setFont(new Font("Courier New", Font.PLAIN, 13));
-		btnPagePrevious.setBounds(38, 182, 105, 29);
 		frameApplication.getContentPane().add(btnPagePrevious);
 
 		btnPageNext = new JButton("Next");
+		btnPageNext.setBounds(305, 182, 105, 29);
 		btnPageNext.setEnabled(false);
 		btnPageNext.setFont(new Font("Courier New", Font.PLAIN, 13));
-		btnPageNext.setBounds(305, 182, 105, 29);
 		frameApplication.getContentPane().add(btnPageNext);
 
 		lblPageNumber = new JLabel("Page: " + page);
+		lblPageNumber.setBounds(140, 187, 168, 16);
 		lblPageNumber.setEnabled(false);
 		lblPageNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPageNumber.setFont(new Font("Courier New", Font.PLAIN, 15));
-		lblPageNumber.setBounds(140, 187, 168, 16);
 		frameApplication.getContentPane().add(lblPageNumber);
 
 		btnFetchPosts = new JButton("Fetch Posts");
+		btnFetchPosts.setBounds(315, 501, 117, 29);
 		btnFetchPosts.setEnabled(false);
 		btnFetchPosts.setFont(new Font("Courier New", Font.PLAIN, 13));
-		btnFetchPosts.setBounds(315, 501, 117, 29);
 		frameApplication.getContentPane().add(btnFetchPosts);
 
 		lblFetchedPage = new JLabel();
-		lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
 		lblFetchedPage.setBounds(28, 501, 285, 18);
+		lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
 		lblFetchedPage.setText(this.getTxtSubReddit().getText());
 		frameApplication.getContentPane().add(lblFetchedPage);
 
@@ -280,10 +278,6 @@ public class View {
 		scrollPane.setViewportView(listSubmissions);
 		listSubmissions.setBorder(BorderFactory
 				.createTitledBorder("Submissions"));
-
-		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_1.setBounds(0, 0, 444, 576);
-		frameApplication.getContentPane().add(tabbedPane_1);
 
 
 		
