@@ -1,4 +1,4 @@
-package com.appliesinc.UpVoteBot;
+package com.appliesinc.KarmaInfinity;
 
 import im.goel.jreddit.submissions.Submission;
 
@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -28,6 +29,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
@@ -39,6 +41,8 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import org.json.simple.parser.ParseException;
 
 import com.alee.laf.WebLookAndFeel;
+import com.appliesinc.KarmaInfinity.Utilities.ComponentMover;
+import com.appliesinc.KarmaInfinity.Utilities.MessageConsole;
 
 /** Ideas to Implement for View class:
  * Make the GUI split into tabs, and add any additional UI's to the current tab list.
@@ -60,8 +64,8 @@ public class View {
 	/** The window. */
 	public static View window;
 
-	/** The Logic object to use. */
-	public static Logic logic;
+	/** The VoteLogic object to use. */
+	public static VoteLogic votelogic;
 
 	/**
 	 * The main method.
@@ -81,7 +85,7 @@ public class View {
 					WebLookAndFeel.install();
 
 					window = new View(); // initialize
-					logic = new Logic(window);
+					votelogic = new VoteLogic(window);
 
 					window.frameApplication.setVisible(true);
 				} catch (Exception e) {
@@ -170,31 +174,23 @@ public class View {
 		frameApplication.setResizable(false);
 		frameApplication.setTitle("Karma \u221E");
 		frameApplication.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-		frameApplication.setBounds(100, 100, 509, 551);
+		frameApplication.setBounds(100, 100, 509, 543);
 		frameApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameApplication.getContentPane().setLayout(null);
-		frameApplication.setUndecorated(true); //remove title bar from JFrame
-		
-		
+		frameApplication.setUndecorated(true); // remove title bar from JFrame
 
 		submissionList = new DefaultListModel<String>();
 
 		btnGroupPageType = new ButtonGroup();
 
-		JPanel panelUpvote = new JPanel();
-		panelUpvote.setBounds(0, 0, 550, 582);
-		frameApplication.getContentPane().add(panelUpvote);
-		panelUpvote.setLayout(null);
-
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 510, 552);
-		panelUpvote.add(tabbedPane);
-		
-		//create a new component mover, allows components to act as draggable points
-		ComponentMover cm = new ComponentMover(JFrame.class, tabbedPane);
-		//allow <arg> components to act as draggable points
-		cm.registerComponent(frameApplication, tabbedPane);
+		frameApplication.getContentPane().add(tabbedPane);
 
+		// create a new component mover, allows components to act as draggable points
+		ComponentMover cm = new ComponentMover(JFrame.class, tabbedPane);
+		// allow <arg> components to act as draggable points
+		cm.registerComponent(frameApplication, tabbedPane);
 
 		JPanel panelVote = new JPanel();
 		tabbedPane.addTab("Vote", (Icon) null, panelVote,
@@ -237,7 +233,8 @@ public class View {
 		btnSignIn.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnSignIn.setToolTipText("Click to Sign In");
 
-		//TODO Actually check if the account list could load (stored in APPDATA?)
+		// TODO Actually check if the account list could load (stored in
+		// APPDATA?)
 		JLabel lblLoadAccountList = new JLabel("Could not load account list!");
 		lblLoadAccountList.setFont(new Font("Courier New", Font.PLAIN, 16));
 		lblLoadAccountList.setBounds(28, 85, 289, 15);
@@ -313,18 +310,18 @@ public class View {
 		panelVote.add(btnGetKarma);
 		btnGetKarma.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGetKarma.setEnabled(false);
-		
-				lblFetchedPage = new JLabel();
-				lblFetchedPage.setBounds(127, 482, 239, 18);
-				panelVote.add(lblFetchedPage);
-				lblFetchedPage.setHorizontalAlignment(SwingConstants.TRAILING);
-				lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
+
+		lblFetchedPage = new JLabel();
+		lblFetchedPage.setBounds(127, 482, 239, 18);
+		panelVote.add(lblFetchedPage);
+		lblFetchedPage.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		btnGetKarma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					logic.btnGetKarmaPressed();
+					votelogic.btnGetKarmaPressed();
 				} catch (IOException e) {
 					System.out.println("Exception: " + e.getMessage()
 							+ "in btnGetKarmaPressed()");
@@ -341,7 +338,7 @@ public class View {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					logic.btnFetchPosts();
+					votelogic.btnFetchPosts();
 				} catch (IOException e) {
 					System.out.println("Exception: " + e.getMessage()
 							+ "in btnFetchPosts()");
@@ -358,81 +355,85 @@ public class View {
 		txtSubReddit.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e) {
-				logic.txtSubRedditCaretUpdate();
+				votelogic.txtSubRedditCaretUpdate();
 			}
 
 		});
 		rdBtnTypeSubreddit.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				logic.rdBtnTypeSubredditStateChanged();
+				votelogic.rdBtnTypeSubredditStateChanged();
 			}
 		});
 		rdBtnTypeUser.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				logic.rdBtnTypeUserStateChanged();
+				votelogic.rdBtnTypeUserStateChanged();
 			}
 		});
 
 		btnPageNext.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				logic.btnPagePreviousPressed();
+				votelogic.btnPagePreviousPressed();
 			}
 		});
 
 		btnPagePrevious.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				logic.btnPagePreviousPressed();
+				votelogic.btnPagePreviousPressed();
 			}
 		});
 		panelVote.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[] { txtUsername, txtPassword, btnSignIn,
 						lblUsername, lblPassword }));
-		
+
 		panelAccountGenerator = new JPanel();
-		tabbedPane.addTab("Account Generator", null, panelAccountGenerator, "Automatically generate reddit accounts");
+		tabbedPane.addTab("Account Generator", null, panelAccountGenerator,
+				"Automatically generate reddit accounts");
 		tabbedPane.setEnabledAt(1, true);
-		
+
 		panelHumanize = new JPanel();
-		tabbedPane.addTab("Humanize Accounts", null, panelHumanize, "Cycle through accounts, humanizing their activity");
+		tabbedPane.addTab("Humanize Accounts", null, panelHumanize,
+				"Cycle through accounts, humanizing their activity");
 		tabbedPane.setEnabledAt(2, true);
-		
+
 		panelConsole = new JPanel();
-		tabbedPane.addTab("Terminal", null, panelConsole, "View the terminal output");
+		tabbedPane.addTab("Terminal", null, panelConsole,
+				"View the terminal output");
 		tabbedPane.setEnabledAt(3, true);
 		panelConsole.setLayout(null);
-		
+
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setViewportBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
+		scrollPane_1.setViewportBorder(new MatteBorder(0, 0, 0, 0,
+				(Color) new Color(0, 0, 0)));
 		scrollPane_1.setBounds(13, 6, 483, 500);
 		scrollPane_1.setForeground(Color.ORANGE);
 		panelConsole.add(scrollPane_1);
-		
+
 		txtpnTerminal = new JTextPane();
 		txtpnTerminal.setForeground(Color.ORANGE);
 		txtpnTerminal.setFont(new Font("Courier New", Font.PLAIN, 14));
 		scrollPane_1.setViewportView(txtpnTerminal);
 		txtpnTerminal.setText("Terminal Output:");
 		txtpnTerminal.setEditable(false);
-		txtpnTerminal.setBackground(new Color(237,237, 237));
+		txtpnTerminal.setBackground(new Color(237, 237, 237));
 
-		//Used to redirect console output to the terminal tab
+		// Used to redirect console output to the terminal tab
 		MessageConsole mc = new MessageConsole(txtpnTerminal);
-		mc.redirectOut(new Color(242, 133, 0), null);
-		mc.redirectErr(Color.RED, null);
-		mc.setMessageLines(1000);
-		
-		/** Action Listeners. */
 		btnSignIn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				logic.btnSignInPressed();
+				votelogic.btnSignInPressed();
 			}
 		});
+		mc.redirectOut(new Color(242, 133, 0), null);
+		mc.redirectErr(Color.RED, null);
+		mc.setMessageLines(1000);
+
+		/** Action Listeners. */
 
 	}
 
@@ -606,18 +607,18 @@ public class View {
 	}
 
 	/**
-	 * @return the logic
+	 * @return the votelogic
 	 */
-	public Logic getLogic() {
-		return logic;
+	public VoteLogic getLogic() {
+		return votelogic;
 	}
 
 	/**
-	 * @param logic
-	 *            the logic to set
+	 * @param votelogic
+	 *            the votelogic to set
 	 */
-	public void setLogic(Logic logic) {
-		View.logic = logic;
+	public void setLogic(VoteLogic logic) {
+		View.votelogic = logic;
 	}
 
 	/**

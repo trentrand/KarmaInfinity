@@ -5,7 +5,7 @@
  * Usage: This class is used to allow the JFrame to be draggable from any JPanel or JFrame
  */
 
-package com.appliesinc.UpVoteBot;
+package com.appliesinc.KarmaInfinity.Utilities;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -5,7 +5,7 @@
  * Usage: This class is used in congunction with LimitLinesDocumentListener for the terminal tab of KarmaInfinity to display console output to the user.
  */
 
-package com.appliesinc.UpVoteBot;
+package com.appliesinc.KarmaInfinity.Utilities;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;

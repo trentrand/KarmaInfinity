@@ -1,4 +1,4 @@
-package com.appliesinc.UpVoteBot;
+package com.appliesinc.KarmaInfinity;
 
 import im.goel.jreddit.submissions.Submission;
 import im.goel.jreddit.user.User;
@@ -9,7 +9,7 @@ import java.util.Random;
 
 import org.json.simple.parser.ParseException;
 
-/** Ideas to Implement for Logic class:
+/** Ideas to Implement for VoteLogic class:
  * // TODO Set the proxy with setProxy("190.73.140.191", "8080"); 
  * // TODO Maybe have them browse a subreddit first, then goto proper one
  * // TODO upvote a random then upvote the selected 
@@ -20,9 +20,9 @@ import org.json.simple.parser.ParseException;
  */
 
 /**
- * The Class Logic.
+ * The Class VoteLogic.
  */
-public class Logic {
+public class VoteLogic {
 
 	/**
 	 * The user currently signed in.
@@ -62,12 +62,12 @@ public class Logic {
 			"mma", "starwars" };
 
 	/**
-	 * Instantiates a new logic object.
+	 * Instantiates a new votelogic object.
 	 * 
 	 * @param _view
 	 *            the _view
 	 */
-	public Logic(View _view) {
+	public VoteLogic(View _view) {
 		view = _view;
 	}
 
