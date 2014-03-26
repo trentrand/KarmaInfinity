@@ -2,7 +2,7 @@
 
 ### What is KarmaInfinity?
 KarmaInfinity is reddit upvote bot. It uses a single proxy per account to mimic reality for each user.
-![Current GUI](http://i.imgur.com/2OK8KYO.png)
+![Current GUI](http://i.imgur.com/3ynCcIB.png)
 
 ### What can it do?
 KarmaInfinity can login with a user, retrieve submissions of /u/ and /r/ pages, vote on submissions, and even cycle through a list of proxied accounts doing each of these actions.
