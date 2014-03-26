@@ -9,7 +9,16 @@ import java.util.Random;
 
 import org.json.simple.parser.ParseException;
 
-// TODO: Auto-generated Javadoc
+/** Ideas to Implement for Logic class:
+ * // TODO Set the proxy with setProxy("190.73.140.191", "8080"); 
+ * // TODO Maybe have them browse a subreddit first, then goto proper one
+ * // TODO upvote a random then upvote the selected 
+ * // TODO Randomize upvote or downvote so it looks real 
+ * // TODO Set a delay between accounts 
+ * // TODO Loop through accounts 
+ * // TODO Have bots upvote and downvote random submssions so they don't all share the same activity
+ */
+
 /**
  * The Class Logic.
  */
@@ -69,6 +78,7 @@ public class Logic {
 	/**
 	 * Btn sign in pressed.
 	 */
+	@SuppressWarnings("deprecation")
 	protected void btnSignInPressed() {
 		try {
 			user = new User(view.getTxtUsername().getText(), view
@@ -225,14 +235,3 @@ public class Logic {
 	}
 }
 
-/*
- * // TODO Set the proxy // setProxy("190.73.140.191", "8080"); // TODO Maybe
- * have them browse a subreddit first, then goto propper one, try {
- * browseRandom(); } catch (IOException e2) { // TODO Auto-generated catch block
- * e2.printStackTrace(); } catch (ParseException e2) { // TODO Auto-generated
- * catch block e2.printStackTrace(); } // TODO upvote a random then upvote the
- * selected // TODO Randomize upvote or downvote so it looks real // TODO Set a
- * delay between accounts // TODO Loop through accounts // TODO Have bots upvote
- * and downvote random submssions so they don't // all share the same activity
- * // Initialize and setup JFrame
- */

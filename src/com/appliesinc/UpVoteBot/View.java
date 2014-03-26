@@ -2,6 +2,8 @@ package com.appliesinc.UpVoteBot;
 
 import im.goel.jreddit.submissions.Submission;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,9 +11,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -25,12 +27,28 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 import org.json.simple.parser.ParseException;
+
+import com.alee.laf.WebLookAndFeel;
+
+/** Ideas to Implement for View class:
+ * Make the GUI split into tabs, and add any additional UI's to the current tab list.
+ * Add instant-payment tab which has a [Start Listener] button
+ * 		When it's on, it scans an email account for payments and runs when it gets one
+ * Add a tab for human behavior, it will load all of the accounts in an ArrayList and randomly select ArrayList.get(Random.nextInt(ArrayList.length-1))
+ * 		Browses reddit and upvotes/downvotes some random shit, has randomized wait() in between to make it feel realistic and NOT just instant browsing
+ * 		Logs out when it's done, and removes that account from the array list.. Repeat with ArrayList.get(Random.nextInt(ArrayList.length-1);
+ * Add an Account Generator tab, which will use an existing API or algorithm to create some VERY randomized usernames. Their password will be generated this way as well.
+ * 		Each account will have a proxy assigned to them tbhat will be permenetly used for now on.
+ * 		The accounts will need to be created with a randomized amount of time between them.
+ */
 
 /**
  * The Class View.
@@ -58,6 +76,8 @@ public class View {
 			@Override
 			public void run() {
 				try {
+					WebLookAndFeel.install();
+
 					window = new View(); // initialize
 					logic = new Logic(window);
 
@@ -101,9 +121,6 @@ public class View {
 	/** The list submissions. */
 	private JList<String> listSubmissions;
 
-	/** The multi panel. */
-	private JPanel multiPanel;
-
 	/** The page. */
 	private int page = 1;
 
@@ -144,8 +161,8 @@ public class View {
 		// Initialize and setup frameApplication JFrame
 		frameApplication = new JFrame();
 		frameApplication.setTitle("Karma \u221E by trent rand");
-		frameApplication.setFont(new Font("Courier New", Font.PLAIN, 12));
-		frameApplication.setBounds(100, 100, 488, 604);
+		frameApplication.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+		frameApplication.setBounds(100, 100, 509, 604);
 		frameApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameApplication.getContentPane().setLayout(null);
 
@@ -153,34 +170,35 @@ public class View {
 
 		btnGroupPageType = new ButtonGroup();
 
-		JPanel panel = new JPanel();
-		panel.setBounds(6, 6, 498, 576);
-		frameApplication.getContentPane().add(panel);
-		panel.setLayout(null);
+		JPanel panelUpvote = new JPanel();
+		panelUpvote.setBounds(0, 0, 550, 582);
+		frameApplication.getContentPane().add(panelUpvote);
+		panelUpvote.setLayout(null);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(47, 6, 404, 171);
-		panel.add(tabbedPane);
+		tabbedPane.setBounds(0, 12, 510, 570);
+		panelUpvote.add(tabbedPane);
 
 		JPanel singlePanel = new JPanel();
-		tabbedPane.addTab("Single User", null, singlePanel, null);
+		tabbedPane.addTab("Vote", (Icon) null, singlePanel,
+				"Upvote or Downvote Submissions");
 		singlePanel.setLayout(null);
 
 		// Initialize and setup Username JLabel
 		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setBounds(6, 13, 81, 18);
+		lblUsername.setBounds(28, 19, 81, 18);
 		singlePanel.add(lblUsername);
 		lblUsername.setFont(new Font("Courier New", Font.BOLD, 15));
 
 		// Initialize and setup Password JLabel
 		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(6, 43, 81, 18);
+		lblPassword.setBounds(28, 49, 81, 18);
 		singlePanel.add(lblPassword);
 		lblPassword.setFont(new Font("Courier New", Font.BOLD, 15));
 
 		// Initialize and setup Password TextField
 		txtPassword = new JPasswordField();
-		txtPassword.setBounds(99, 36, 257, 31);
+		txtPassword.setBounds(127, 42, 281, 31);
 		singlePanel.add(txtPassword);
 		txtPassword.setFont(new Font("Courier New", Font.PLAIN, 16));
 		txtPassword.setToolTipText("Password");
@@ -189,7 +207,7 @@ public class View {
 
 		// Initialize and setup Username Textfield
 		txtUsername = new JFormattedTextField();
-		txtUsername.setBounds(99, 6, 257, 31);
+		txtUsername.setBounds(127, 12, 281, 31);
 		singlePanel.add(txtUsername);
 		txtUsername.setText("KarmaInfinityBot");
 		txtUsername.setFont(new Font("Courier New", Font.PLAIN, 16));
@@ -197,112 +215,92 @@ public class View {
 
 		// Initialize and setup Sign-In JButton
 		btnSignIn = new JButton("Sign In");
-		btnSignIn.setBounds(256, 79, 100, 29);
+		btnSignIn.setBounds(329, 79, 100, 29);
 		singlePanel.add(btnSignIn);
 		btnSignIn.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnSignIn.setToolTipText("Click to Sign In");
 
-		multiPanel = new JPanel();
-		tabbedPane.addTab("Multiple Users", null, multiPanel, null);
-
-		JLabel lblTodo = new JLabel("TODO");
-		multiPanel.add(lblTodo);
+		//TODO Actually check if the account list could load (stored in APPDATA?)
+		JLabel lblLoadAccountList = new JLabel("Could not load account list!");
+		lblLoadAccountList.setFont(new Font("Courier New", Font.PLAIN, 16));
+		lblLoadAccountList.setBounds(28, 85, 289, 15);
+		singlePanel.add(lblLoadAccountList);
 
 		// Initialize and setup separator JSeperator
 		JSeparator separator = new JSeparator();
-		separator.setBounds(35, 170, 428, 12);
-		panel.add(separator);
+		separator.setBounds(6, 120, 495, 12);
+		singlePanel.add(separator);
 
 		lblPageNumber = new JLabel("Page: " + page);
-		lblPageNumber.setBounds(190, 194, 117, 16);
-		panel.add(lblPageNumber);
+		lblPageNumber.setBounds(196, 137, 117, 16);
+		singlePanel.add(lblPageNumber);
 		lblPageNumber.setEnabled(false);
 		lblPageNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPageNumber.setFont(new Font("Courier New", Font.PLAIN, 15));
 
 		btnPagePrevious = new JButton("Previous");
-		btnPagePrevious.setBounds(35, 189, 105, 29);
-		panel.add(btnPagePrevious);
+		btnPagePrevious.setBounds(6, 131, 105, 29);
+		singlePanel.add(btnPagePrevious);
 		btnPagePrevious.setEnabled(false);
 		btnPagePrevious.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		btnPageNext = new JButton("Next");
-		btnPageNext.setBounds(346, 189, 105, 29);
-		panel.add(btnPageNext);
+		btnPageNext.setBounds(396, 131, 105, 29);
+		singlePanel.add(btnPageNext);
 		btnPageNext.setEnabled(false);
 		btnPageNext.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(32, 222, 419, 274);
-		panel.add(scrollPane);
+		scrollPane.setBounds(23, 173, 463, 268);
+		singlePanel.add(scrollPane);
 
 		listSubmissions = new JList<String>(submissionList);
 		scrollPane.setViewportView(listSubmissions);
-		listSubmissions.setBorder(BorderFactory
-				.createTitledBorder("Submissions"));
+		listSubmissions.setBorder(new TitledBorder(null, "Submissions",
+				TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(
+						59, 59, 59)));
+
+		rdBtnTypeUser = new JRadioButton("/u/");
+		rdBtnTypeUser.setBounds(174, 481, 57, 18);
+		singlePanel.add(rdBtnTypeUser);
+
+		btnGroupPageType.add(rdBtnTypeUser);
+
+		rdBtnTypeSubreddit = new JRadioButton("/r/");
+		rdBtnTypeSubreddit.setBounds(127, 482, 57, 16);
+		singlePanel.add(rdBtnTypeSubreddit);
+		btnGroupPageType.add(rdBtnTypeSubreddit);
+
+		// Initialize and setup Post-Address JLabel
+		JLabel lblPageName = new JLabel("Page Name:");
+		lblPageName.setBounds(28, 454, 109, 16);
+		singlePanel.add(lblPageName);
+		lblPageName.setFont(new Font("Courier New", Font.PLAIN, 16));
+
+		txtSubReddit = new JTextField();
+		txtSubReddit.setBounds(127, 450, 239, 28);
+		singlePanel.add(txtSubReddit);
+		txtSubReddit.setFont(new Font("Courier New", Font.PLAIN, 13));
+		txtSubReddit.setColumns(10);
 
 		btnFetchPosts = new JButton("Fetch Posts");
-		btnFetchPosts.setBounds(346, 514, 117, 29);
-		panel.add(btnFetchPosts);
+		btnFetchPosts.setBounds(369, 449, 117, 29);
+		singlePanel.add(btnFetchPosts);
 		btnFetchPosts.setEnabled(false);
 		btnFetchPosts.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		// Initialize and setup Get-Karma JButton
 		btnGetKarma = new JButton("Get Karma");
-		btnGetKarma.setBounds(346, 539, 117, 29);
-		panel.add(btnGetKarma);
+		btnGetKarma.setBounds(369, 500, 117, 29);
+		singlePanel.add(btnGetKarma);
 		btnGetKarma.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGetKarma.setEnabled(false);
-
-		txtSubReddit = new JTextField();
-		txtSubReddit.setBounds(153, 539, 191, 28);
-		panel.add(txtSubReddit);
-		txtSubReddit.setFont(new Font("Courier New", Font.PLAIN, 13));
-		txtSubReddit.setColumns(10);
-
-		// Initialize and setup Post-Address JLabel
-		JLabel lblPageName = new JLabel("Page Name:");
-		lblPageName.setBounds(35, 543, 109, 16);
-		panel.add(lblPageName);
-		lblPageName.setFont(new Font("Courier New", Font.PLAIN, 16));
-
-		rdBtnTypeSubreddit = new JRadioButton("/r/");
-		rdBtnTypeSubreddit.setBounds(35, 520, 57, 23);
-		panel.add(rdBtnTypeSubreddit);
-		btnGroupPageType.add(rdBtnTypeSubreddit);
-
-		rdBtnTypeUser = new JRadioButton("/u/");
-		rdBtnTypeUser.setBounds(35, 500, 57, 23);
-		panel.add(rdBtnTypeUser);
-
-		btnGroupPageType.add(rdBtnTypeUser);
-
-		lblFetchedPage = new JLabel();
-		lblFetchedPage.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblFetchedPage.setBounds(243, 500, 207, 18);
-		panel.add(lblFetchedPage);
-		lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
-		lblFetchedPage.setText(this.getTxtSubReddit().getText());
-		rdBtnTypeUser.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				logic.rdBtnTypeUserStateChanged();
-			}
-		});
-		rdBtnTypeSubreddit.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				logic.rdBtnTypeSubredditStateChanged();
-			}
-		});
-
-		txtSubReddit.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				logic.txtSubRedditCaretUpdate();
-			}
-
-		});
+		
+				lblFetchedPage = new JLabel();
+				lblFetchedPage.setBounds(0, 0, 239, 18);
+				singlePanel.add(lblFetchedPage);
+				lblFetchedPage.setHorizontalAlignment(SwingConstants.TRAILING);
+				lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		btnGetKarma.addActionListener(new ActionListener() {
 			@Override
@@ -337,6 +335,27 @@ public class View {
 				}
 			}
 		});
+		lblFetchedPage.setText(this.getTxtSubReddit().getText());
+
+		txtSubReddit.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				logic.txtSubRedditCaretUpdate();
+			}
+
+		});
+		rdBtnTypeSubreddit.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				logic.rdBtnTypeSubredditStateChanged();
+			}
+		});
+		rdBtnTypeUser.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				logic.rdBtnTypeUserStateChanged();
+			}
+		});
 
 		btnPageNext.addActionListener(new ActionListener() {
 			@Override
@@ -351,6 +370,9 @@ public class View {
 				logic.btnPagePreviousPressed();
 			}
 		});
+		singlePanel.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[] { txtUsername, txtPassword, btnSignIn,
+						lblUsername, lblPassword }));
 
 		/** Action Listeners. */
 		btnSignIn.addActionListener(new ActionListener() {
@@ -544,22 +566,7 @@ public class View {
 	 *            the logic to set
 	 */
 	public void setLogic(Logic logic) {
-		this.logic = logic;
-	}
-
-	/**
-	 * @return the multiPanel
-	 */
-	public JPanel getMultiPanel() {
-		return multiPanel;
-	}
-
-	/**
-	 * @param multiPanel
-	 *            the multiPanel to set
-	 */
-	public void setMultiPanel(JPanel multiPanel) {
-		this.multiPanel = multiPanel;
+		View.logic = logic;
 	}
 
 	/**
