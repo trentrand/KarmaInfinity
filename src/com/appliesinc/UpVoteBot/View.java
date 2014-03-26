@@ -26,7 +26,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -145,6 +147,11 @@ public class View {
 	/** The txt username. */
 	private JFormattedTextField txtUsername;
 	private JScrollPane scrollPane;
+	private JPanel panelAccountGenerator;
+	private JPanel panelHumanize;
+	private JPanel panelConsole;
+	private JTextPane txtpnTerminal;
+	private JScrollPane scrollPane_1;
 
 	/**
 	 * Instantiates a new view.
@@ -160,11 +167,15 @@ public class View {
 
 		// Initialize and setup frameApplication JFrame
 		frameApplication = new JFrame();
-		frameApplication.setTitle("Karma \u221E by trent rand");
+		frameApplication.setResizable(false);
+		frameApplication.setTitle("Karma \u221E");
 		frameApplication.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-		frameApplication.setBounds(100, 100, 509, 604);
+		frameApplication.setBounds(100, 100, 509, 551);
 		frameApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameApplication.getContentPane().setLayout(null);
+		frameApplication.setUndecorated(true); //remove title bar from JFrame
+		
+		
 
 		submissionList = new DefaultListModel<String>();
 
@@ -176,30 +187,36 @@ public class View {
 		panelUpvote.setLayout(null);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 12, 510, 570);
+		tabbedPane.setBounds(0, 0, 510, 552);
 		panelUpvote.add(tabbedPane);
+		
+		//create a new component mover, allows components to act as draggable points
+		ComponentMover cm = new ComponentMover(JFrame.class, tabbedPane);
+		//allow <arg> components to act as draggable points
+		cm.registerComponent(frameApplication, tabbedPane);
 
-		JPanel singlePanel = new JPanel();
-		tabbedPane.addTab("Vote", (Icon) null, singlePanel,
-				"Upvote or Downvote Submissions");
-		singlePanel.setLayout(null);
+
+		JPanel panelVote = new JPanel();
+		tabbedPane.addTab("Vote", (Icon) null, panelVote,
+				"Upvote or downvote submissions");
+		panelVote.setLayout(null);
 
 		// Initialize and setup Username JLabel
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setBounds(28, 19, 81, 18);
-		singlePanel.add(lblUsername);
+		panelVote.add(lblUsername);
 		lblUsername.setFont(new Font("Courier New", Font.BOLD, 15));
 
 		// Initialize and setup Password JLabel
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setBounds(28, 49, 81, 18);
-		singlePanel.add(lblPassword);
+		panelVote.add(lblPassword);
 		lblPassword.setFont(new Font("Courier New", Font.BOLD, 15));
 
 		// Initialize and setup Password TextField
 		txtPassword = new JPasswordField();
 		txtPassword.setBounds(127, 42, 281, 31);
-		singlePanel.add(txtPassword);
+		panelVote.add(txtPassword);
 		txtPassword.setFont(new Font("Courier New", Font.PLAIN, 16));
 		txtPassword.setToolTipText("Password");
 
@@ -208,7 +225,7 @@ public class View {
 		// Initialize and setup Username Textfield
 		txtUsername = new JFormattedTextField();
 		txtUsername.setBounds(127, 12, 281, 31);
-		singlePanel.add(txtUsername);
+		panelVote.add(txtUsername);
 		txtUsername.setText("KarmaInfinityBot");
 		txtUsername.setFont(new Font("Courier New", Font.PLAIN, 16));
 		txtUsername.setToolTipText("Username");
@@ -216,7 +233,7 @@ public class View {
 		// Initialize and setup Sign-In JButton
 		btnSignIn = new JButton("Sign In");
 		btnSignIn.setBounds(329, 79, 100, 29);
-		singlePanel.add(btnSignIn);
+		panelVote.add(btnSignIn);
 		btnSignIn.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnSignIn.setToolTipText("Click to Sign In");
 
@@ -224,35 +241,35 @@ public class View {
 		JLabel lblLoadAccountList = new JLabel("Could not load account list!");
 		lblLoadAccountList.setFont(new Font("Courier New", Font.PLAIN, 16));
 		lblLoadAccountList.setBounds(28, 85, 289, 15);
-		singlePanel.add(lblLoadAccountList);
+		panelVote.add(lblLoadAccountList);
 
 		// Initialize and setup separator JSeperator
 		JSeparator separator = new JSeparator();
 		separator.setBounds(6, 120, 495, 12);
-		singlePanel.add(separator);
+		panelVote.add(separator);
 
 		lblPageNumber = new JLabel("Page: " + page);
 		lblPageNumber.setBounds(196, 137, 117, 16);
-		singlePanel.add(lblPageNumber);
+		panelVote.add(lblPageNumber);
 		lblPageNumber.setEnabled(false);
 		lblPageNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPageNumber.setFont(new Font("Courier New", Font.PLAIN, 15));
 
 		btnPagePrevious = new JButton("Previous");
 		btnPagePrevious.setBounds(6, 131, 105, 29);
-		singlePanel.add(btnPagePrevious);
+		panelVote.add(btnPagePrevious);
 		btnPagePrevious.setEnabled(false);
 		btnPagePrevious.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		btnPageNext = new JButton("Next");
 		btnPageNext.setBounds(396, 131, 105, 29);
-		singlePanel.add(btnPageNext);
+		panelVote.add(btnPageNext);
 		btnPageNext.setEnabled(false);
 		btnPageNext.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(23, 173, 463, 268);
-		singlePanel.add(scrollPane);
+		panelVote.add(scrollPane);
 
 		listSubmissions = new JList<String>(submissionList);
 		scrollPane.setViewportView(listSubmissions);
@@ -261,44 +278,45 @@ public class View {
 						59, 59, 59)));
 
 		rdBtnTypeUser = new JRadioButton("/u/");
-		rdBtnTypeUser.setBounds(174, 481, 57, 18);
-		singlePanel.add(rdBtnTypeUser);
+		rdBtnTypeUser.setBounds(80, 482, 57, 18);
+		panelVote.add(rdBtnTypeUser);
 
 		btnGroupPageType.add(rdBtnTypeUser);
 
 		rdBtnTypeSubreddit = new JRadioButton("/r/");
-		rdBtnTypeSubreddit.setBounds(127, 482, 57, 16);
-		singlePanel.add(rdBtnTypeSubreddit);
+		rdBtnTypeSubreddit.setSelected(true);
+		rdBtnTypeSubreddit.setBounds(33, 483, 57, 16);
+		panelVote.add(rdBtnTypeSubreddit);
 		btnGroupPageType.add(rdBtnTypeSubreddit);
 
 		// Initialize and setup Post-Address JLabel
 		JLabel lblPageName = new JLabel("Page Name:");
 		lblPageName.setBounds(28, 454, 109, 16);
-		singlePanel.add(lblPageName);
+		panelVote.add(lblPageName);
 		lblPageName.setFont(new Font("Courier New", Font.PLAIN, 16));
 
 		txtSubReddit = new JTextField();
 		txtSubReddit.setBounds(127, 450, 239, 28);
-		singlePanel.add(txtSubReddit);
+		panelVote.add(txtSubReddit);
 		txtSubReddit.setFont(new Font("Courier New", Font.PLAIN, 13));
 		txtSubReddit.setColumns(10);
 
 		btnFetchPosts = new JButton("Fetch Posts");
 		btnFetchPosts.setBounds(369, 449, 117, 29);
-		singlePanel.add(btnFetchPosts);
+		panelVote.add(btnFetchPosts);
 		btnFetchPosts.setEnabled(false);
 		btnFetchPosts.setFont(new Font("Courier New", Font.PLAIN, 13));
 
 		// Initialize and setup Get-Karma JButton
 		btnGetKarma = new JButton("Get Karma");
-		btnGetKarma.setBounds(369, 500, 117, 29);
-		singlePanel.add(btnGetKarma);
+		btnGetKarma.setBounds(369, 478, 117, 29);
+		panelVote.add(btnGetKarma);
 		btnGetKarma.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGetKarma.setEnabled(false);
 		
 				lblFetchedPage = new JLabel();
-				lblFetchedPage.setBounds(0, 0, 239, 18);
-				singlePanel.add(lblFetchedPage);
+				lblFetchedPage.setBounds(127, 482, 239, 18);
+				panelVote.add(lblFetchedPage);
 				lblFetchedPage.setHorizontalAlignment(SwingConstants.TRAILING);
 				lblFetchedPage.setFont(new Font("Courier New", Font.PLAIN, 13));
 
@@ -370,10 +388,43 @@ public class View {
 				logic.btnPagePreviousPressed();
 			}
 		});
-		singlePanel.setFocusTraversalPolicy(new FocusTraversalOnArray(
+		panelVote.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[] { txtUsername, txtPassword, btnSignIn,
 						lblUsername, lblPassword }));
+		
+		panelAccountGenerator = new JPanel();
+		tabbedPane.addTab("Account Generator", null, panelAccountGenerator, "Automatically generate reddit accounts");
+		tabbedPane.setEnabledAt(1, true);
+		
+		panelHumanize = new JPanel();
+		tabbedPane.addTab("Humanize Accounts", null, panelHumanize, "Cycle through accounts, humanizing their activity");
+		tabbedPane.setEnabledAt(2, true);
+		
+		panelConsole = new JPanel();
+		tabbedPane.addTab("Terminal", null, panelConsole, "View the terminal output");
+		tabbedPane.setEnabledAt(3, true);
+		panelConsole.setLayout(null);
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setViewportBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
+		scrollPane_1.setBounds(13, 6, 483, 500);
+		scrollPane_1.setForeground(Color.ORANGE);
+		panelConsole.add(scrollPane_1);
+		
+		txtpnTerminal = new JTextPane();
+		txtpnTerminal.setForeground(Color.ORANGE);
+		txtpnTerminal.setFont(new Font("Courier New", Font.PLAIN, 14));
+		scrollPane_1.setViewportView(txtpnTerminal);
+		txtpnTerminal.setText("Terminal Output:");
+		txtpnTerminal.setEditable(false);
+		txtpnTerminal.setBackground(new Color(237,237, 237));
 
+		//Used to redirect console output to the terminal tab
+		MessageConsole mc = new MessageConsole(txtpnTerminal);
+		mc.redirectOut(new Color(242, 133, 0), null);
+		mc.redirectErr(Color.RED, null);
+		mc.setMessageLines(1000);
+		
 		/** Action Listeners. */
 		btnSignIn.addActionListener(new ActionListener() {
 
