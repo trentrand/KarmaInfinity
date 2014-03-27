@@ -10,7 +10,6 @@ public class MarkNSFWTest {
     public void test() throws Exception {
         User user = new User("jReddittest", "jReddittest"); // Add your username and password
         user.connect();
-
         List<Submission> submissions = user.getSubmissions();
 
         Submission s = submissions.get(0);

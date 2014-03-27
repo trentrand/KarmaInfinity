@@ -30,6 +30,11 @@ public class VoteLogic {
 	private User user;
 
 	/**
+	 * Toggle boolean for email payment listener.
+	 */
+	private boolean listenerOn = false;
+
+	/**
 	 * The View passed in constructor.
 	 */
 	private View view;
@@ -163,15 +168,41 @@ public class VoteLogic {
 	 *             the parse exception
 	 */
 	protected void btnFetchPosts() throws IOException, ParseException {
-		view.setSubmissionsFetched(user.getSubmissions(getSlashType()
-				+ view.getTxtSubReddit().getText() + "/"));
-		for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
-			view.getSubmissionList().add(
-					i,
-					"[" + view.getSubmissionsFetched().get(i).getAuthor()
-							+ "] "
-							+ view.getSubmissionsFetched().get(i).getTitle());
+
+		view.getSubmissionList().clear(); //clear the submission list
+		
+		if (view.getRdBtnTypeSubreddit().isSelected()) { //fetching /r/ submissions
+
+			view.setSubmissionsFetched(user.getSubmissions(getSlashType()
+					+ view.getTxtSubReddit().getText() + "/"));
+			
+			for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
+				view.getSubmissionList().add(
+						i,
+						"["
+								+ view.getSubmissionsFetched().get(i)
+										.getAuthor()
+								+ "] "
+								+ view.getSubmissionsFetched().get(i)
+										.getTitle());
+			}
+		} else { // fetching user submissions
+			
+			view.setSubmissionsFetched(user.submissions(view.getTxtSubReddit()
+					.getText()));
+
+			for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
+				view.getSubmissionList().add(
+						i,
+						"["
+								+ view.getSubmissionsFetched().get(i)
+										.getAuthor()
+								+ "] "
+								+ view.getSubmissionsFetched().get(i)
+										.getTitle());
+			}
 		}
+
 		view.getBtnGetKarma().setEnabled(true);
 	}
 
@@ -233,5 +264,11 @@ public class VoteLogic {
 		// List<Submission> saved = user.getSavedSubmissions();
 
 	}
-}
 
+	public void toggleListener() {
+		listenerOn = !listenerOn; // toggle listener when button is pushed
+		if (listenerOn) {
+
+		}
+	}
+}

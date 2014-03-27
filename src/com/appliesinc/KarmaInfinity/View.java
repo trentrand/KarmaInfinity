@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -29,7 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
@@ -43,6 +41,15 @@ import org.json.simple.parser.ParseException;
 import com.alee.laf.WebLookAndFeel;
 import com.appliesinc.KarmaInfinity.Utilities.ComponentMover;
 import com.appliesinc.KarmaInfinity.Utilities.MessageConsole;
+import javax.swing.ImageIcon;
+import javax.swing.JSpinner;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ListSelectionModel;
 
 /** Ideas to Implement for View class:
  * Make the GUI split into tabs, and add any additional UI's to the current tab list.
@@ -96,6 +103,7 @@ public class View {
 			}
 		});
 	}
+	
 
 	/** The btn fetch posts. */
 	private JButton btnFetchPosts;
@@ -150,12 +158,16 @@ public class View {
 
 	/** The txt username. */
 	private JFormattedTextField txtUsername;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPaneSubmission;
 	private JPanel panelAccountGenerator;
 	private JPanel panelHumanize;
 	private JPanel panelConsole;
 	private JTextPane txtpnTerminal;
-	private JScrollPane scrollPane_1;
+	private JScrollPane scrollPaneTerminal;
+	private JSpinner spinner;
+	private JPanel panelNumOfAccounts;
+	private JTable tableAccountList;
+	private JScrollPane scrollPaneAccountList;
 
 	/**
 	 * Instantiates a new view.
@@ -264,12 +276,12 @@ public class View {
 		btnPageNext.setEnabled(false);
 		btnPageNext.setFont(new Font("Courier New", Font.PLAIN, 13));
 
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 173, 463, 268);
-		panelVote.add(scrollPane);
+		scrollPaneSubmission = new JScrollPane();
+		scrollPaneSubmission.setBounds(23, 173, 463, 268);
+		panelVote.add(scrollPaneSubmission);
 
 		listSubmissions = new JList<String>(submissionList);
-		scrollPane.setViewportView(listSubmissions);
+		scrollPaneSubmission.setViewportView(listSubmissions);
 		listSubmissions.setBorder(new TitledBorder(null, "Submissions",
 				TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(
 						59, 59, 59)));
@@ -392,11 +404,170 @@ public class View {
 		panelAccountGenerator = new JPanel();
 		tabbedPane.addTab("Account Generator", null, panelAccountGenerator,
 				"Automatically generate reddit accounts");
+		panelAccountGenerator.setLayout(null);
+		
+		spinner = new JSpinner();
+		spinner.setBounds(421, 12, 71, 53);
+		panelAccountGenerator.add(spinner);
+		
+		panelNumOfAccounts = new JPanel();
+		panelNumOfAccounts.setBackground(Color.WHITE);
+		panelNumOfAccounts.setBorder(new LineBorder(Color.GRAY, 2, true));
+		panelNumOfAccounts.setBounds(12, 12, 411, 53);
+		panelAccountGenerator.add(panelNumOfAccounts);
+		panelNumOfAccounts.setLayout(null);
+		
+		JLabel lblNumOfAccounts = new JLabel("Number of accounts to generate?");
+		lblNumOfAccounts.setBounds(12, 12, 387, 15);
+		panelNumOfAccounts.add(lblNumOfAccounts);
+		lblNumOfAccounts.setBackground(Color.WHITE);
+		lblNumOfAccounts.setFont(new Font("Courier New", Font.PLAIN, 18));
+		
+		JButton btnGenerateAccounts = new JButton("Generate Accounts");
+		btnGenerateAccounts.setFont(new Font("Courier New", Font.PLAIN, 13));
+		btnGenerateAccounts.setBounds(323, 487, 170, 26);
+		panelAccountGenerator.add(btnGenerateAccounts);
+		
+		scrollPaneAccountList = new JScrollPane();
+		scrollPaneAccountList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneAccountList.setBounds(12, 77, 480, 306);
+		scrollPaneAccountList.setBackground(new Color(0,0,0));
+		panelAccountGenerator.add(scrollPaneAccountList);
+		
+		tableAccountList = new JTable();
+		scrollPaneAccountList.setViewportView(tableAccountList);
+		tableAccountList.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+			},
+			new String[] {
+				"Username", "Password", "Proxy:Port"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tableAccountList.getColumnModel().getColumn(0).setPreferredWidth(232);
+		tableAccountList.getColumnModel().getColumn(1).setPreferredWidth(185);
+		tableAccountList.getColumnModel().getColumn(2).setPreferredWidth(183);
+		tableAccountList.setFont(new Font("Courier New", Font.PLAIN, 13));
+		tableAccountList.setBorder(new LineBorder(Color.GRAY, 1, true));
 		tabbedPane.setEnabledAt(1, true);
 
 		panelHumanize = new JPanel();
 		tabbedPane.addTab("Humanize Accounts", null, panelHumanize,
 				"Cycle through accounts, humanizing their activity");
+		panelHumanize.setLayout(null);
+		
+		JButton btnStartListener = new JButton("");
+		btnStartListener.setIcon(new ImageIcon("/Users/trentmrand/Development/KarmaInfinity/startlistener.png"));
+		btnStartListener.setBackground(new Color(0, 0, 0, 0));
+		btnStartListener.setBounds(453, 465, 40, 40);
+		
+		panelHumanize.add(btnStartListener);
 		tabbedPane.setEnabledAt(2, true);
 
 		panelConsole = new JPanel();
@@ -405,17 +576,17 @@ public class View {
 		tabbedPane.setEnabledAt(3, true);
 		panelConsole.setLayout(null);
 
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setViewportBorder(new MatteBorder(0, 0, 0, 0,
+		scrollPaneTerminal = new JScrollPane();
+		scrollPaneTerminal.setViewportBorder(new MatteBorder(0, 0, 0, 0,
 				(Color) new Color(0, 0, 0)));
-		scrollPane_1.setBounds(13, 6, 483, 500);
-		scrollPane_1.setForeground(Color.ORANGE);
-		panelConsole.add(scrollPane_1);
+		scrollPaneTerminal.setBounds(13, 6, 483, 500);
+		scrollPaneTerminal.setForeground(Color.ORANGE);
+		panelConsole.add(scrollPaneTerminal);
 
 		txtpnTerminal = new JTextPane();
 		txtpnTerminal.setForeground(Color.ORANGE);
 		txtpnTerminal.setFont(new Font("Courier New", Font.PLAIN, 14));
-		scrollPane_1.setViewportView(txtpnTerminal);
+		scrollPaneTerminal.setViewportView(txtpnTerminal);
 		txtpnTerminal.setText("Terminal Output:");
 		txtpnTerminal.setEditable(false);
 		txtpnTerminal.setBackground(new Color(237, 237, 237));
