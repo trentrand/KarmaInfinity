@@ -188,7 +188,7 @@ public class VoteLogic {
 			}
 		} else { // fetching user submissions
 			
-			view.setSubmissionsFetched(user.submissions(view.getTxtSubReddit()
+			view.setSubmissionsFetched(User.submissions(view.getTxtSubReddit()
 					.getText()));
 
 			for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
