@@ -11,8 +11,6 @@ import org.json.simple.parser.ParseException;
 
 import com.github.jreddit.submissions.Submission;
 import com.github.jreddit.submissions.Submissions;
-import com.github.jreddit.submissions.Submissions.Page;
-import com.github.jreddit.submissions.Submissions.Popularity;
 import com.github.jreddit.user.User;
 
 /** Ideas to Implement for VoteLogic class:
@@ -128,7 +126,8 @@ public class VoteLogic {
 		// .getLblFetchedPage().getText(), view.getListSubmissions()
 		// .getSelectedIndex(), user);
 		// Submission submission = view.getListSubmissions().
-		Submission submission = fetchedSubmissions.get(view.getListSubmissions().getSelectedIndex());
+		Submission submission = fetchedSubmissions.get(view
+				.getListSubmissions().getSelectedIndex());
 		System.out.println("Upvoting Post: " + submission.getTitle());
 		submission.upVote();
 
@@ -186,8 +185,8 @@ public class VoteLogic {
 		if (view.getRdBtnTypeSubreddit().isSelected()) { // fetching /r/
 															// submissions
 
-			fetchedSubmissions = Submissions.submissions(view
-					.getTxtSubReddit().getText());
+			fetchedSubmissions = Submissions.getSubmissions(view.getTxtSubReddit()
+					.getText());
 
 			for (int i = 0; i < fetchedSubmissions.size(); i++) {
 				view.getSubmissionList().add(

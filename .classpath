@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="commons-io-2.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jReddit"/>
 	<classpathentry kind="lib" path="json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="weblaf-1.26.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jReddit-TrentsBranch"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
