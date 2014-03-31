@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -41,6 +42,7 @@ import org.json.simple.parser.ParseException;
 import com.alee.laf.WebLookAndFeel;
 import com.appliesinc.KarmaInfinity.Utilities.ComponentMover;
 import com.appliesinc.KarmaInfinity.Utilities.MessageConsole;
+
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
 import javax.swing.border.SoftBevelBorder;
@@ -424,6 +426,11 @@ public class View {
 		lblNumOfAccounts.setFont(new Font("Courier New", Font.PLAIN, 18));
 		
 		JButton btnGenerateAccounts = new JButton("Generate Accounts");
+		btnGenerateAccounts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(votelogic.generateLogin());
+			}
+		});
 		btnGenerateAccounts.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGenerateAccounts.setBounds(323, 487, 170, 26);
 		panelAccountGenerator.add(btnGenerateAccounts);
@@ -434,127 +441,37 @@ public class View {
 		scrollPaneAccountList.setBackground(new Color(0,0,0));
 		panelAccountGenerator.add(scrollPaneAccountList);
 		
-		tableAccountList = new JTable();
-		scrollPaneAccountList.setViewportView(tableAccountList);
-		tableAccountList.setModel(new DefaultTableModel(
+		//FIXME testing to populate JTable with a ArrayList
+		ArrayList arrayList = new ArrayList();
+
+		  String[] columns = {"Username","Password"," Proxy:Port"};
+		  DefaultTableModel model = new DefaultTableModel(columns, 1);
+
+		  for (Object item : arrayList) {
+		     Object[] row = new Object[2];
+		     //... fill in row with info from item
+		     row[0] = "_karmawhore";
+		     row[1] = "xx380813xx,,";
+		     row[2] = "192.168.0.1:5499";
+		     model.addRow(row);
+		  }
+		//FIXME End of testing.
+		tableAccountList = new JTable(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
 				{null, null, null},
 			},
 			new String[] {
-				"Username", "Password", "Proxy:Port"
+				"Username", "Password", " Proxy:Port"
 			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableAccountList.getColumnModel().getColumn(0).setPreferredWidth(232);
-		tableAccountList.getColumnModel().getColumn(1).setPreferredWidth(185);
-		tableAccountList.getColumnModel().getColumn(2).setPreferredWidth(183);
+		));
+		scrollPaneAccountList.setViewportView(tableAccountList);
 		tableAccountList.setFont(new Font("Courier New", Font.PLAIN, 13));
 		tableAccountList.setBorder(new LineBorder(Color.GRAY, 1, true));
+	
+
+		
+		
+		
 		tabbedPane.setEnabledAt(1, true);
 
 		panelHumanize = new JPanel();

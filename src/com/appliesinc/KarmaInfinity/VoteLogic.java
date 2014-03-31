@@ -5,8 +5,10 @@ import im.goel.jreddit.user.User;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
 
+import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
 
 /** Ideas to Implement for VoteLogic class:
@@ -169,13 +171,14 @@ public class VoteLogic {
 	 */
 	protected void btnFetchPosts() throws IOException, ParseException {
 
-		view.getSubmissionList().clear(); //clear the submission list
-		
-		if (view.getRdBtnTypeSubreddit().isSelected()) { //fetching /r/ submissions
+		view.getSubmissionList().clear(); // clear the submission list
+
+		if (view.getRdBtnTypeSubreddit().isSelected()) { // fetching /r/
+															// submissions
 
 			view.setSubmissionsFetched(user.getSubmissions(getSlashType()
 					+ view.getTxtSubReddit().getText() + "/"));
-			
+
 			for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
 				view.getSubmissionList().add(
 						i,
@@ -187,7 +190,7 @@ public class VoteLogic {
 										.getTitle());
 			}
 		} else { // fetching user submissions
-			
+
 			view.setSubmissionsFetched(User.submissions(view.getTxtSubReddit()
 					.getText()));
 
@@ -239,7 +242,6 @@ public class VoteLogic {
 			System.out.println("Went Random");
 		} else {
 			System.out.println("No random");
-
 		}
 
 		/* List of random stuff */
@@ -265,10 +267,80 @@ public class VoteLogic {
 
 	}
 
+	// Toggles the <listenerOn> variable, which will eventually trigger a paypal
+	// instant payment API to run
 	public void toggleListener() {
 		listenerOn = !listenerOn; // toggle listener when button is pushed
 		if (listenerOn) {
-
+			// start listener
 		}
 	}
+
+	/**
+	 * @param chanceOfWin
+	 *            The percentage chance of winning out of 100.
+	 * @return boolean Based on if the chance was successful or not.
+	 */
+	public boolean rollChance(int chanceOfWin) {
+		int random = (int) new Random().nextFloat() * 100;
+		if (random < chanceOfWin) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Call RandomUser.me API to generate a random logic returns a String
+	 * formatted "username/password/email"
+	 */
+	public String generateLogin() {
+		try {
+
+			int startIndex, endIndex;
+			String username, password, jsonString, email;
+
+			jsonString = IOUtils.toString(new URL(
+					"http://api.randomuser.me/0.3.2/"));
+
+			// 11 is the length of "username":
+			startIndex = jsonString.indexOf("\"username\":\"") + 11;
+			// one after the startIndex, so it doesnt catch the same "
+			endIndex = jsonString.indexOf("\"", ++startIndex);
+			username = jsonString.substring(startIndex, endIndex);
+
+			// 11 is the length of "password":
+			startIndex = jsonString.indexOf("\"password\":\"") + 11;
+			// one after the startIndex, so it doesnt catch the same "
+			endIndex = jsonString.indexOf("\"", ++startIndex);
+			password = jsonString.substring(startIndex, endIndex);
+
+			// 11 is the length of "password":
+			startIndex = jsonString.indexOf("\"email\":\"") + 11;
+			// one after the startIndex, so it doesnt catch the same "
+			endIndex = jsonString.indexOf("\"", ++startIndex);
+			email = jsonString.substring(startIndex, endIndex);
+
+			// TODO foreign email providers (aol, zoho, icloud, mail, shortmail,
+			// inbox)
+			// replace the @example.com with a random provider
+			int random = (int) (new Random().nextFloat() * 100);
+			if (random < 45) {
+				email = email.replaceFirst("example", "gmail");
+			} else if (random < 60) {
+				email = email.replaceFirst("example", "hotmail");
+			} else if (random < 75) {
+				email = email.replaceFirst("example", "yahoo");
+			} else if (random < 90) {
+				email = email.replaceFirst("example", "live");
+			} else {
+				email = email.replaceFirst("example", "outlook");
+			}
+
+			return username + "/" + password + "/" + email;
+		} catch (IOException e) {
+			System.out.println("Exception: " + e.getMessage());
+		}
+		return null;
+	}
+
 }
