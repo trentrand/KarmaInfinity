@@ -1,15 +1,19 @@
 package com.appliesinc.KarmaInfinity;
 
-import im.goel.jreddit.submissions.Submission;
-import im.goel.jreddit.user.User;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
+
+import com.github.jreddit.submissions.Submission;
+import com.github.jreddit.submissions.Submissions;
+import com.github.jreddit.submissions.Submissions.Page;
+import com.github.jreddit.submissions.Submissions.Popularity;
+import com.github.jreddit.user.User;
 
 /** Ideas to Implement for VoteLogic class:
  * // TODO Set the proxy with setProxy("190.73.140.191", "8080"); 
@@ -35,6 +39,11 @@ public class VoteLogic {
 	 * Toggle boolean for email payment listener.
 	 */
 	private boolean listenerOn = false;
+
+	/**
+	 * Hold fetched <Submission> list
+	 */
+	List<Submission> fetchedSubmissions;
 
 	/**
 	 * The View passed in constructor.
@@ -115,10 +124,11 @@ public class VoteLogic {
 	 *             the parse exception
 	 */
 	protected void btnGetKarmaPressed() throws IOException, ParseException {
-		Submission submission = Submission.getSubmission(view
-				.getLblFetchedPage().getText(), view.getListSubmissions()
-				.getSelectedIndex(), user);
-
+		// Submission submission = Submission.getSubmission(view
+		// .getLblFetchedPage().getText(), view.getListSubmissions()
+		// .getSelectedIndex(), user);
+		// Submission submission = view.getListSubmissions().
+		Submission submission = fetchedSubmissions.get(view.getListSubmissions().getSelectedIndex());
 		System.out.println("Upvoting Post: " + submission.getTitle());
 		submission.upVote();
 
@@ -165,9 +175,9 @@ public class VoteLogic {
 	 * Btn fetch posts.
 	 * 
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *             If connection fails
 	 * @throws ParseException
-	 *             the parse exception
+	 *             If JSON parsing fails
 	 */
 	protected void btnFetchPosts() throws IOException, ParseException {
 
@@ -176,33 +186,25 @@ public class VoteLogic {
 		if (view.getRdBtnTypeSubreddit().isSelected()) { // fetching /r/
 															// submissions
 
-			view.setSubmissionsFetched(user.getSubmissions(getSlashType()
-					+ view.getTxtSubReddit().getText() + "/"));
+			fetchedSubmissions = Submissions.submissions(view
+					.getTxtSubReddit().getText());
 
-			for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
+			for (int i = 0; i < fetchedSubmissions.size(); i++) {
 				view.getSubmissionList().add(
 						i,
-						"["
-								+ view.getSubmissionsFetched().get(i)
-										.getAuthor()
-								+ "] "
-								+ view.getSubmissionsFetched().get(i)
-										.getTitle());
+						"[" + fetchedSubmissions.get(i).getAuthor() + "] "
+								+ fetchedSubmissions.get(i).getTitle());
 			}
 		} else { // fetching user submissions
 
-			view.setSubmissionsFetched(User.submissions(view.getTxtSubReddit()
-					.getText()));
+			fetchedSubmissions = User.submissions(view.getTxtSubReddit()
+					.getText());
 
-			for (int i = 0; i < view.getSubmissionsFetched().size(); i++) {
+			for (int i = 0; i < fetchedSubmissions.size(); i++) {
 				view.getSubmissionList().add(
 						i,
-						"["
-								+ view.getSubmissionsFetched().get(i)
-										.getAuthor()
-								+ "] "
-								+ view.getSubmissionsFetched().get(i)
-										.getTitle());
+						"[" + fetchedSubmissions.get(i).getAuthor() + "] "
+								+ fetchedSubmissions.get(i).getTitle());
 			}
 		}
 
@@ -288,7 +290,7 @@ public class VoteLogic {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Call RandomUser.me API to generate a random logic returns a String
 	 * formatted "username/password/email"

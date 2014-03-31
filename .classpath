@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="commons-io-2.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jReddit"/>
 	<classpathentry kind="lib" path="json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="weblaf-1.26.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
-	<classpathentry kind="lib" path="commons-io-2.4.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/KarmaInfinity/commons-io-2.4-javadoc.jar!/"/>
-			<attribute name="javadoc_location" value="jar:file:/Users/trentmrand/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

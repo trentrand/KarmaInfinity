@@ -8,9 +8,12 @@
 package com.appliesinc.KarmaInfinity.Utilities;
 
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
 
 /*
  *  A class to control the maximum number of lines to be stored in a Document

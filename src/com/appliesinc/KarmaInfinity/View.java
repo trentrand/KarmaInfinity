@@ -1,6 +1,5 @@
 package com.appliesinc.KarmaInfinity;
 
-import im.goel.jreddit.submissions.Submission;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -15,6 +14,7 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -25,16 +25,21 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import org.json.simple.parser.ParseException;
@@ -42,16 +47,7 @@ import org.json.simple.parser.ParseException;
 import com.alee.laf.WebLookAndFeel;
 import com.appliesinc.KarmaInfinity.Utilities.ComponentMover;
 import com.appliesinc.KarmaInfinity.Utilities.MessageConsole;
-
-import javax.swing.ImageIcon;
-import javax.swing.JSpinner;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.ListSelectionModel;
+import com.github.jreddit.submissions.Submission;
 
 /** Ideas to Implement for View class:
  * Make the GUI split into tabs, and add any additional UI's to the current tab list.
@@ -149,8 +145,6 @@ public class View {
 	/** The submission list. */
 	private DefaultListModel<String> submissionList;
 
-	/** The submissions fetched. */
-	private List<Submission> submissionsFetched;
 
 	/** The txt password. */
 	private JPasswordField txtPassword;
@@ -767,21 +761,6 @@ public class View {
 	 */
 	public void setSubmissionList(DefaultListModel<String> submissionList) {
 		this.submissionList = submissionList;
-	}
-
-	/**
-	 * @return the submissionsFetched
-	 */
-	public List<Submission> getSubmissionsFetched() {
-		return submissionsFetched;
-	}
-
-	/**
-	 * @param submissionsFetched
-	 *            the submissionsFetched to set
-	 */
-	public void setSubmissionsFetched(List<Submission> submissionsFetched) {
-		this.submissionsFetched = submissionsFetched;
 	}
 
 	/**
