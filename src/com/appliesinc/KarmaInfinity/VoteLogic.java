@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.parser.ParseException;
@@ -42,6 +43,12 @@ public class VoteLogic {
 	 * Hold fetched <Submission> list
 	 */
 	List<Submission> fetchedSubmissions;
+
+	/**
+	 * Vector to hold generated account information.
+	 */
+	Vector<AccountInfo> accountList = new Vector<AccountInfo>();
+
 
 	/**
 	 * The View passed in constructor.
@@ -185,8 +192,8 @@ public class VoteLogic {
 		if (view.getRdBtnTypeSubreddit().isSelected()) { // fetching /r/
 															// submissions
 
-			fetchedSubmissions = Submissions.getSubmissions(view.getTxtSubReddit()
-					.getText());
+			fetchedSubmissions = Submissions.getSubmissions(view
+					.getTxtSubReddit().getText());
 
 			for (int i = 0; i < fetchedSubmissions.size(); i++) {
 				view.getSubmissionList().add(
@@ -294,7 +301,7 @@ public class VoteLogic {
 	 * Call RandomUser.me API to generate a random logic returns a String
 	 * formatted "username/password/email"
 	 */
-	public String generateLogin() {
+	public AccountInfo generateLogin() {
 		try {
 
 			int startIndex, endIndex;
@@ -336,12 +343,10 @@ public class VoteLogic {
 			} else {
 				email = email.replaceFirst("example", "outlook");
 			}
-
-			return username + "/" + password + "/" + email;
+			return new AccountInfo(username, password, email, "192.168.0.1");
 		} catch (IOException e) {
 			System.out.println("Exception: " + e.getMessage());
 		}
 		return null;
 	}
-
 }

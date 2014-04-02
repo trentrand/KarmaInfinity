@@ -1,6 +1,5 @@
 package com.appliesinc.KarmaInfinity;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -8,8 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -30,7 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
@@ -39,7 +36,6 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import org.json.simple.parser.ParseException;
@@ -47,7 +43,6 @@ import org.json.simple.parser.ParseException;
 import com.alee.laf.WebLookAndFeel;
 import com.appliesinc.KarmaInfinity.Utilities.ComponentMover;
 import com.appliesinc.KarmaInfinity.Utilities.MessageConsole;
-import com.github.jreddit.submissions.Submission;
 
 /** Ideas to Implement for View class:
  * Make the GUI split into tabs, and add any additional UI's to the current tab list.
@@ -101,7 +96,6 @@ public class View {
 			}
 		});
 	}
-	
 
 	/** The btn fetch posts. */
 	private JButton btnFetchPosts;
@@ -145,12 +139,19 @@ public class View {
 	/** The submission list. */
 	private DefaultListModel<String> submissionList;
 
-
 	/** The txt password. */
 	private JPasswordField txtPassword;
 
 	/** The txt sub reddit. */
 	private JTextField txtSubReddit;
+
+	// TODO write this header
+	private JList<String> listAccountList;
+
+	/**
+	 * Vector to hold generated account data.
+	 */
+	Vector<String> accountInfoData;
 
 	/** The txt username. */
 	private JFormattedTextField txtUsername;
@@ -163,7 +164,8 @@ public class View {
 	private JSpinner spinner;
 	private JPanel panelNumOfAccounts;
 	private JTable tableAccountList;
-	private JScrollPane scrollPaneAccountList;
+	private JTable table;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Instantiates a new view.
@@ -195,7 +197,8 @@ public class View {
 		tabbedPane.setBounds(0, 0, 510, 552);
 		frameApplication.getContentPane().add(tabbedPane);
 
-		// create a new component mover, allows components to act as draggable points
+		// create a new component mover, allows components to act as draggable
+		// points
 		ComponentMover cm = new ComponentMover(JFrame.class, tabbedPane);
 		// allow <arg> components to act as draggable points
 		cm.registerComponent(frameApplication, tabbedPane);
@@ -383,7 +386,7 @@ public class View {
 		btnPageNext.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				votelogic.btnPagePreviousPressed();
+				votelogic.btnPageNextPressed();
 			}
 		});
 
@@ -401,83 +404,71 @@ public class View {
 		tabbedPane.addTab("Account Generator", null, panelAccountGenerator,
 				"Automatically generate reddit accounts");
 		panelAccountGenerator.setLayout(null);
-		
+
 		spinner = new JSpinner();
 		spinner.setBounds(421, 12, 71, 53);
 		panelAccountGenerator.add(spinner);
-		
+
 		panelNumOfAccounts = new JPanel();
 		panelNumOfAccounts.setBackground(Color.WHITE);
 		panelNumOfAccounts.setBorder(new LineBorder(Color.GRAY, 2, true));
 		panelNumOfAccounts.setBounds(12, 12, 411, 53);
 		panelAccountGenerator.add(panelNumOfAccounts);
 		panelNumOfAccounts.setLayout(null);
-		
+
 		JLabel lblNumOfAccounts = new JLabel("Number of accounts to generate?");
 		lblNumOfAccounts.setBounds(12, 12, 387, 15);
 		panelNumOfAccounts.add(lblNumOfAccounts);
 		lblNumOfAccounts.setBackground(Color.WHITE);
 		lblNumOfAccounts.setFont(new Font("Courier New", Font.PLAIN, 18));
-		
+
 		JButton btnGenerateAccounts = new JButton("Generate Accounts");
 		btnGenerateAccounts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(votelogic.generateLogin());
+				// TODO connect to next proxy on list
+				
+				// generate random AccountInfo
+				AccountInfo ai = votelogic.generateLogin();
+
+				// TODO create an account with it
+				
+				
+				// add it to a list of accounts
+				votelogic.accountList.add(ai);
+				
+				// display this created account in the Jlist of accounts
+				accountInfoData.add(ai.toString());
+				listAccountList.setListData(accountInfoData);
 			}
 		});
+
 		btnGenerateAccounts.setFont(new Font("Courier New", Font.PLAIN, 13));
 		btnGenerateAccounts.setBounds(323, 487, 170, 26);
 		panelAccountGenerator.add(btnGenerateAccounts);
-		
-		scrollPaneAccountList = new JScrollPane();
-		scrollPaneAccountList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPaneAccountList.setBounds(12, 77, 480, 306);
-		scrollPaneAccountList.setBackground(new Color(0,0,0));
+
+		JScrollPane scrollPaneAccountList = new JScrollPane();
+
+		scrollPaneAccountList.setBounds(12, 77, 474, 399);
 		panelAccountGenerator.add(scrollPaneAccountList);
-		
-		//FIXME testing to populate JTable with a ArrayList
-		ArrayList arrayList = new ArrayList();
 
-		  String[] columns = {"Username","Password"," Proxy:Port"};
-		  DefaultTableModel model = new DefaultTableModel(columns, 1);
+		accountInfoData = new Vector<String>();
+		listAccountList = new JList<String>(accountInfoData);
+		scrollPaneAccountList.setViewportView(listAccountList);
 
-		  for (Object item : arrayList) {
-		     Object[] row = new Object[2];
-		     //... fill in row with info from item
-		     row[0] = "_karmawhore";
-		     row[1] = "xx380813xx,,";
-		     row[2] = "192.168.0.1:5499";
-		     model.addRow(row);
-		  }
-		//FIXME End of testing.
-		tableAccountList = new JTable(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-			},
-			new String[] {
-				"Username", "Password", " Proxy:Port"
-			}
-		));
-		scrollPaneAccountList.setViewportView(tableAccountList);
-		tableAccountList.setFont(new Font("Courier New", Font.PLAIN, 13));
-		tableAccountList.setBorder(new LineBorder(Color.GRAY, 1, true));
-	
-
-		
-		
-		
 		tabbedPane.setEnabledAt(1, true);
 
 		panelHumanize = new JPanel();
 		tabbedPane.addTab("Humanize Accounts", null, panelHumanize,
 				"Cycle through accounts, humanizing their activity");
 		panelHumanize.setLayout(null);
-		
+
 		JButton btnStartListener = new JButton("");
-		btnStartListener.setIcon(new ImageIcon("/Users/trentmrand/Development/KarmaInfinity/startlistener.png"));
+		btnStartListener
+				.setIcon(new ImageIcon(
+						"/Users/trentmrand/Development/KarmaInfinity/startlistener.png"));
 		btnStartListener.setBackground(new Color(0, 0, 0, 0));
 		btnStartListener.setBounds(453, 465, 40, 40);
-		
+
 		panelHumanize.add(btnStartListener);
 		tabbedPane.setEnabledAt(2, true);
 
