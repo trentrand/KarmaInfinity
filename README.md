@@ -13,6 +13,7 @@ Current I would like to focus attention on creating a stable bot with single use
 ## How to contribute?
 To contribute please fork the repo and make all alterations on that fork. After your feature is ready to be merged into the main code, send a pull request! I will check over it and accept it if it works as wanted.
 ####_All code must be commented and well written_
+Likewise, it would be a great help if jReddit (mentioned below) was better finished. If you'd prefer to help write a Java reddit wrapper, head over there and push some changes.
 
 Be sure to make the bot realistic and randomized!
 _Send in a pull request and I'll be happy to merge!_
